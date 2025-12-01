@@ -1,0 +1,168 @@
+Livre = { titre : Texte, auteur : Texte, isbn : Texte, categorie : Texte, disponible : Booléen}
+Livres = []
+
+#Ajouter un livre
+    FONCTION ajouter_livre(livre)
+        AJOUTER livre à Livres
+    FIN FONCTION 
+
+#Modifier les informations d'un livre
+    FONCTION modifier_livre(isbn, nouvelles_infos)
+        POUR CHAQUE livre DANS Livres
+            SI livre.isbn == isbn ALORS
+                MODIFIER livre avec nouvelles_infos
+                RETOURNER VRAI
+            FIN SI
+        FIN POUR
+        RETOURNER FAUX
+    FIN FONCTION
+
+
+#Supprimer un livre
+    FONCTION supprimer_livre(isbn)
+        POUR CHAQUE livre DANS Livres
+            SI livre.isbn == isbn ALORS
+                SUPPRIMER livre DE Livres
+                RETOURNER VRAI
+            FIN SI
+        FIN POUR
+        RETOURNER FAUX
+    FIN FONCTION
+
+
+
+#Rechercher un livre par titre, auteur ou ISBN
+    FONCTION rechercher_livre(critere, valeur)
+        resultats <- LISTE VIDE
+        POUR CHAQUE livre DANS Livres
+            SI critere DANS livre ET valeur DANS critere ALORS
+                AJOUTER livre à resultats
+            FIN SI
+        FIN POUR
+        RETOURNER resultats
+    FIN FONCTION
+
+liste_usagers = []
+
+#Valider les données d'un usager
+    FONCTION valider_usager(usager)
+        SI usager.nom EST VIDE ALORS
+            RETOURNER FAUX, "Le nom est obligatoire."
+        FIN SI
+
+        identifiant <- usager["identifiant"]
+        SI identifiant EST VIDE ALORS
+            RETOURNER FAUX, "L'identifiant est obligatoire."
+        FIN SI
+        POUR CHAQUE u dans liste_usagers
+            SI u["identifiant"] == identifiant ALORS
+                RETOURNER FAUX, "L'identifiant est deja utilisé."
+            FIN SI
+        FIN POUR
+        RETOURNER VRAI, "Usager Valide."
+    FIN FONCTION
+
+#Ajouter un usager
+    FONCTION ajouter_usager(usager)
+        (est_valide, message) <- valider_usager(usager, liste_usagers)
+        SI est_valide ALORS
+            AJOUTER usager à liste_usagers
+            RETOURNER VRAI, "Usager ajouté."
+        SINON
+            RETOURNER FAUX, message
+        FIN SI
+    FIN FONCTION
+
+#Modifier les informations d'un usager
+    FONCTION modifier_usager(identifiant, nouvelles_infos)
+        POUR CHAQUE usager DANS liste_usagers
+            SI usager.identifiant == identifiant ALORS
+                MODIFIER usager avec nouvelles_infos
+                RETOURNER VRAI, "Usager modifié."
+            FIN SI
+        FIN POUR
+        RETOURNER FAUX, "Usager non trouvé."
+    FIN FONCTION
+
+
+#Emprunter un livre
+    FONCTION emprunter_livre(catalogue, usager, isbn, date_emprunt)
+        POUR CHAQUE livre DANS catalogue
+            SI livre.isbn == isbn ALORS
+                SI livre.disponible EST VRAI ALORS
+                    MODIFIER livre avec {disponible : FAUX}
+                    RETOURNER VRAI, "Livre emprunté."
+                SINON
+                    RETOURNER FAUX, "Le livre n'est pas disponible."
+                FIN SI
+            FIN SI
+        FIN POUR
+        RETOURNER FAUX, "Livre non trouvé."
+    FIN FONCTION
+
+#Retourner un livre
+    FONCTION retourner_livre(catalogue, usager, isbn, date_retour)
+        POUR CHAQUE livre DANS catalogue
+            SI livre.isbn == isbn ALORS
+                SI livre.disponible EST FAUX ALORS
+                    MODIFIER livre avec {disponible : VRAI}
+                    RETOURNER VRAI, "Livre retourné."
+                SINON
+                    RETOURNER FAUX, "Le livre est déjà disponible."
+                FIN SI
+            FIN SI
+        FIN POUR
+        RETOURNER FAUX, "Livre non trouvé."
+    FIN FONCTION
+
+#Verifier les retards
+    FONCTION verifier_retards(usager, date_actuelle)
+        retards <- LISTE VIDE
+        POUR CHAQUE emprunt DANS usager.emprunts
+            SI emprunt.date_retour < date_actuelle ALORS
+                AJOUTER {livre : emprunt.livre, date_retour : emprunt.date_retour} à retards
+            FIN SI
+        FIN POUR
+        RETOURNER retards
+    FIN FONCTION
+
+
+#Fonction qui retourne la liste des livres les plus empruntés
+FONCTION livres_les_plus_empruntes(liste_emprunts)
+    livres_empruntes <- DICTIONNAIRE VIDE
+    POUR CHAQUE emprunt DANS liste_emprunts
+        livre <- emprunt.livre
+        SI livre DANS livres_empruntes ALORS
+            MODIFIER livres_empruntes[livre] avec {nb_emprunts : livres_empruntes[livre].nb_emprunts + 1}
+        SINON
+            AJOUTER {livre : livre, nb_emprunts : 1} à livres_empruntes
+        FIN SI
+    FIN POUR
+    TRIER livres_empruntes par nb_emprunts EN ORDRE DÉCRIT
+    RETOURNER LISTE DES CLÉS DE livres_empruntes
+FIN FONCTION
+
+#Fonction qui retourne la liste des catégories populaires
+FONCTION categories_populaires(liste_emprunts)
+    categories_empruntes <- DICTIONNAIRE VIDE
+    POUR CHAQUE emprunt DANS liste_emprunts
+        categorie <- emprunt.livre.categorie
+        SI categorie DANS categories_empruntes ALORS
+            MODIFIER categories_empruntes[categorie] avec {nb_emprunts : categories_empruntes[categorie].nb_emprunts + 1}
+        SINON
+            AJOUTER {categorie : categorie, nb_emprunts : 1} à categories_empruntes
+        FIN SI
+    FIN POUR
+    TRIER categories_empruntes par nb_emprunts EN ORDRE DÉCRIT
+    RETOURNER LISTE DES CLÉS DE categories_empruntes
+FIN FONCTION
+
+#Fonction qui génère un rapport mensuel
+FONCTION generer_rapport(liste_emprunts, mois)
+    rapport <- "Rapport mensuel du mois " + mois
+    livres_empruntes <- livres_les_plus_empruntes(liste_emprunts)
+    rapport <- rapport + "Les livres les plus empruntés sont : " + LISTE DES ÉLÉMENTS DE livres_empruntes SEPARÉS PAR " "
+    categories_empruntes <- categories_populaires(liste_emprunts)
+    rapport <- rapport + "Les catégories les plus populaires sont : " + LISTE DES ÉLÉMENTS DE categories_empruntes SEPARÉS PAR " "
+    RETOURNER rapport
+FIN FONCTION
