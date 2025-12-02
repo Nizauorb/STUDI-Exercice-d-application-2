@@ -361,4 +361,129 @@ DEBUT
     FIN FONCTION
 FIN
 
+#Exercice 1
 
+DEBUT 
+    DECLARER nombre comme ENTIER
+
+    ECRIRE "Saisissez un nombre : "
+    LIRE nombre
+    
+    #Vérifier si le nombre est pair ou impair
+    SI nombre % 2 == 0 ALORS
+        ECRIRE "Le nombre est pair"
+    SINON
+        ECRIRE "Le nombre est impair"
+    FIN SI
+FIN
+
+#Exercice 2 - Maximum de deux nombres
+
+DEBUT 
+    DECLARER firstNumber comme ENTIER
+    DECLARER secondNumber comme ENTIER
+    
+    ECRIRE "Saisissez le premier nombre : "
+    LIRE firstNumber
+    
+    ECRIRE "Saisissez le deuxième nombre : "
+    LIRE secondNumber
+
+    #Vérifier si le premier nombre est plus grand que le deuxième
+    SI firstNumber > secondNumber ALORS
+        ECRIRE "Le premier nombre est plus grand que le deuxième"
+    SINON
+        ECRIRE "Le deuxième nombre est plus grand que le premier"
+    SINON
+        ECRIRE "Les deux nombres sont egaux"
+    FIN SI
+FIN
+
+#Exercice 3 - Somme de firstNumber à secondNumber
+
+DEBUT
+    DECLARER firstNumber comme ENTIER
+    DECLARER secondNumber comme ENTIER
+
+    ECRIRE "Entrée le premier nombre : "
+    LIRE firstNumber
+    
+    ECRIRE "Entrée le deuxième nombre : "
+    LIRE secondNumber
+
+    SI firstNumber > secondNumber ALORS
+        ECRIRE "Erreur : Le premier combre doit être plus petit ou égal au second"
+    SINON
+        #Calculer la somme des nombre de firstNumber à secondNumber
+        somme <- 0
+        POUR i allant de firstNumber à secondNumber
+            somme <- somme + i
+        FIN POUR
+    ECRIRE "La somme des nombre de ", firstNumber, " à ", secondNumber, " est : ", somme
+FIN
+
+#Exercice 4 - Algo compteur de voyelle
+
+DEBUT 
+    DECLARER mot comme CHAINE
+    DECLARER compteur comme ENTIER
+
+    ECRIRE "Entrée un mot : "
+    LIRE mot
+
+    POUR i allant de 0 à LONGUEUR(mot) - 1
+        SI mot[i] EST "a" OU mot[i] EST "e" OU mot[i] EST "i" OU mot[i] EST "o" OU mot[i] EST "u" ALORS
+            compteur <- compteur + 1
+        FIN SI
+    FIN POUR
+    ECRIRE "Le nombre de voyelle dans le mot est : ", compteur
+FIN
+
+#Exercice 5 - Trouver la valeur minimum dans un tableau
+
+DEBUT 
+    DECLARER tableau comme LISTE
+    DECLARER n comme ENTIER
+    DECLARER minimum comme ENTIER
+
+    ECRIRE "Entrée le nombre d'éléments du tableau : "
+    LIRE n
+
+    POUR i allant de 0 à n - 1
+        ECRIRE "Entrée l'élément " + i + " : "
+        LIRE tableau[i]
+    FIN POUR
+
+    minimum <- tableau[0]
+    POUR i allant de 1 à n - 1
+        SI tableau[i] < minimum ALORS
+            minimum <- tableau[i]
+        FIN SI
+    FIN POUR
+    ECRIRE "La valeur minimum dans le tableau est : ", minimum
+FIN
+
+#Exercice 6 - Vérifier si un nombre est un nombre premier
+
+DEBUT
+    DECLARER nombre comme ENTIER
+    DECLARER estPremier comme BOOLEEN
+    estPremier ← VRAI
+    
+    ECRIRE "Entrée un nombre : "
+    LIRE nombre
+    
+    #Vérifier si le nombre est premier
+    SI nombre < 2 ALORS
+        ECRIRE "Le nombre n'est pas premier"
+    SINON
+        POUR i allant de 2 à nombre - 1
+            SI nombre % i == 0 ALORS
+                ECRIRE "Le nombre n'est pas premier"
+                SORTIR
+            FIN SI
+        FIN POUR
+        ECRIRE "Le nombre est premier"
+    FIN SI
+FIN
+    
