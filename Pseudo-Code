@@ -166,3 +166,172 @@ FONCTION generer_rapport(liste_emprunts, mois)
     rapport <- rapport + "Les catégories les plus populaires sont : " + LISTE DES ÉLÉMENTS DE categories_empruntes SEPARÉS PAR " "
     RETOURNER rapport
 FIN FONCTION
+
+
+
+
+#Exercice application de reduction en fonction de l'ages d'un utilisateur
+
+#Tableau des valeurs 
+Moins de 13 ans 100%
+13 - 17 50%
+18 - 25 30%
+26 - 40 20%
+41 - 60 10%
+Plus de 60 15% 
+
+
+TABLEAU des_reductions = {
+    { 0, 12, 1.0 },    # 100% de réduction (gratuit) pour les 0-12 ans
+    { 13, 17, 0.5 },    # 50% de réduction pour les 13-17 ans
+    { 18, 25, 0.3 },    # 30% de réduction pour les 18-25 ans
+    { 26, 40, 0.2 },    # 20% de réduction pour les 26-40 ans
+    { 41, 60, 0.1 },    # 10% de réduction pour les 41-60 ans
+    { 61, 150, 0.15 }   # 15% de réduction pour les plus de 60 ans
+}
+
+FONCTION reduction_age(age)
+    POUR CHAQUE reduction DANS des_reductions
+        SI age >= reduction[1] ET age <= reduction[2] ALORS
+            RETOURNER reduction[3]
+        FIN SI
+    FIN POUR
+    RETOURNER 0
+FIN FONCTION
+
+
+#Algo Pseudo Code Table de Multiplication
+
+Début
+    Déclarer nombre comme ENTIER
+    
+    ECRIRE "Entrée Utilisateur : " 
+    LIRE nombre
+    POUR i allant de 1 à 10
+        ECRIRE nombre, "x", i, " = ", nombre * i
+    FIN POUR
+FIN
+
+
+
+#Algo calculer un devis
+DEBUT
+    DECLARER article comme CHAINE
+    DECLARER prix comme REEL
+    DECLARER reduction comme ENTIER
+    DECLARER quantité comme ENTIER
+    DECLARER prix_total comme REEL
+
+    DECLARER listeArticle comme LISTE
+
+    #L'utilisateur veut continuer
+    DECLARER continuer_achat comme BOOLEEN
+    continuer_achat <- VRAI
+ 
+    #Fonction pour que l'utilisateur saisise un article
+    FONCTION saisir_article()
+        ECRIRE "Nom de l'article ? (-1 pour terminer)
+        LIRE article
+        ECRIRE "Quel est le prix de l'article ?
+        LIRE prix
+        ECRIRE "Quelle est la quantité ? 
+        LIRE quantité
+        ECRIRE 'Quel est la remise en pourcentage (0-100) ? 
+        LIRE reduction
+    FIN FONCTION
+    
+    #Si l'utilisateur ecrit "-1" terminer le programme
+    SI article == "-1" ALORS
+        continuer_achat <- FAUX
+    FIN SI
+    
+    #Tant que l'utilisateur veut continuer
+    TANT QUE continuer_achat EST VRAI FAIRE    
+        saisir_article()
+        #Calculer le prix total avec réduction
+        prix_total <- prix * quantité * (1 - reduction / 100)
+        ECRIRE "Prix total : ", prix_total
+
+        #Ajouter l'article à la liste
+        listeArticle.AJOUTER(article + "|" + quantité + "|" + prix_total)
+    FIN TANT QUE
+
+    #Fonction pour afficher la liste des articles ainsi que le total à payer
+    FONCTION afficher_panier()
+        ECRIRE "Liste des articles et le total à payer : "
+        totalAPayer <- calculer_montant()
+        POUR CHAQUE article DANS listeArticle
+            ECRIRE article
+        FIN POUR
+        ECRIRE "Total à payer : ", totalAPayer
+    FIN FONCTION
+
+    #Fonction pour calculer le montant total
+    FONCTION calculer_montant()
+        totalAPayer <- 0
+        POUR CHAQUE article DANS listeArticle
+            totalAPayer <- totalAPayer + article.SPLIT("|")[2].TO_REEL() * article.SPLIT("|")[3].TO_REEL()
+        FIN POUR
+        RETOURNER totalAPayer
+    FIN FONCTION
+    
+    #Appel des fonctions
+    afficher_panier()
+FIN 
+    
+
+
+Class Livre 
+    Attributs :
+        titre comme CHAINE
+        auteur comme CHAINE
+        nombre_page comme ENTIER
+        disponible comme BOOLEEN
+
+    Methodes :
+        #Afficher les informations d'un livre
+        FONCTION afficherInfos()
+            ECRIRE "Titre : " + titre
+            ECRIRE "Auteur : " + auteur
+            ECRIRE "Nombre de pages : " + nombre_page
+            ECRIRE "Disponible : " + disponible
+        FIN FONCTION
+
+        #Fonction pour emprunter un livre
+        FONCTION emprunter_livre(livre)
+            SI disponible EST VRAI ALORS
+                disponible <- FAUX
+            SINON
+                ECRIRE "Le livre n'est pas disponible."
+            FIN SI
+        FIN FONCTION
+
+        #Fonction pour rendre un livre
+        FONCTION rendre_livre(livre)
+            disponible <- VRAI
+        FIN FONCTION
+Fin Class
+
+
+DEBUT
+    monLivre: Livre
+    monLivre = New Livre
+    monLivre.titre = "Biologie Animal"
+    monLivre.auteur = "Max"
+    monLivre.nombre_page = 100
+    monLivre.disponible = VRAI
+    
+    
+    APPELER monLivre.afficherInfos()
+
+    DECLARER reponse comme CHAINE
+
+    SI monLivre.disponible EST FAUX
+        ECRIRE "Voulez-vous le rendre ?"
+        LIRE reponse
+        SI reponse EST "Oui" ALORS
+            APPELER monLivre.rendre_livre()
+        FIN SI
+    FIN SI
+FIN
+
