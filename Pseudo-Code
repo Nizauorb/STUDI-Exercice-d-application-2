@@ -332,6 +332,33 @@ DEBUT
         SI reponse EST "Oui" ALORS
             APPELER monLivre.rendre_livre()
         FIN SI
+    SINON
+        ECRIRE "Voulez-vous le emprunter ?"
+        LIRE reponse
+        SI reponse EST "Oui" ALORS
+            APPELER monLivre.emprunter_livre()
+        FIN SI
     FIN SI
 FIN
+
+
+#Exemple d'une fonction récursive qui explore tout les sous-dossiers et fichier d'un répertoire
+
+Class Repertoire
+    DECLARER nom comme CHAINE
+    DECLARER nomFichier comme LISTE DE CHAINE
+    DECLARER sous_dossier comme LISTE DE Repertoire
+Fin Class
+
+DEBUT
+    FONCTION explorer_repertoire(repertoire)
+        POUR CHAQUE fichier DANS repertoire.nomFichier
+            ECRIRE fichier
+        FIN POUR
+        POUR CHAQUE sous_dossier DANS repertoire.sous_dossier
+            APPELER explorer_repertoire(sous_dossier)
+        FIN POUR
+    FIN FONCTION
+FIN
+
 
