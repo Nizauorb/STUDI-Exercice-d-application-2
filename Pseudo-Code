@@ -467,8 +467,6 @@ FIN
 
 DEBUT
     DECLARER nombre comme ENTIER
-    DECLARER estPremier comme BOOLEEN
-    estPremier ← VRAI
     
     ECRIRE "Entrée un nombre : "
     LIRE nombre
