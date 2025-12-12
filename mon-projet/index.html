@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>mon-projet</title>
+  </head>
+  <body>
+    <form action="" method="GET">
+      <div>
+        <label for="nom">Nom :</label>
+        <input type="text" name="nom" id="nom" required>
+      </div><br>
+      <div>
+        <label for="prenom">Prenom :</label>
+        <input type="text" name="prenom" id="prenom" required>
+      </div><br>
+      <div>
+        <label for="email">Email :</label>
+        <input type="email" name="email" id="email" required>
+      </div><br>
+      <div>
+        <label for="langage">Langage :</label>
+        <div>
+          <select name="langage" id="langage" required>
+            <option value="">Choisir un langage</option>
+            <option value="javascript">Javascipt</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="c">C</option>
+            <option value="c++">C++</option>
+            <option value="php">PHP</option>
+          </select>
+        </div><br>
+      </div>
+      <div>
+        <label for="commentaire">Commentaire :</label><br>
+        <textarea name="commentaire" id="commentaire" required></textarea>
+      </div><br>
+      <input type="submit" value="Envoyer">
+    </form>
+    
+    
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
